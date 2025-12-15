@@ -1,0 +1,122 @@
+🔗 HOW TO GET YOUR QR CODE
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Your Metro dev server is RUNNING at port 8081 ✅
+
+But the QR code isn't showing because we're using React Native CLI mode, not Expo mode.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+OPTION 1: INSTANT - Press 'a' in Terminal
+──────────────────────────────────────────────────────────────────────────────
+
+Your terminal is currently showing:
+
+  i - run on iOS
+  a - run on Android
+  d - open Dev Menu
+  r - reload app
+
+JUST PRESS 'a' (then Enter) in the terminal window where npm start is running!
+
+This will:
+1. Build the APK
+2. Install on Android emulator
+3. Launch app automatically
+4. You'll see Onboarding screen!
+
+
+OPTION 2: USE EXPO GO APP (5 seconds)
+──────────────────────────────────────────────────────────────────────────────
+
+We need to show the QR code. Do this:
+
+1. Kill the current server:
+   Ctrl+C in the terminal running "npm start"
+
+2. Start with Expo mode:
+   npm start -- --tunnel
+   
+   Or simpler:
+   npx expo start
+
+3. QR code will appear in terminal - use Expo Go app to scan it!
+
+
+OPTION 3: OPEN IN BROWSER (Quick Test)
+──────────────────────────────────────────────────────────────────────────────
+
+The server is already running, so:
+
+1. Open your browser: http://localhost:8081
+
+2. Metro will show a page with options
+
+3. You can test the UI in browser (some features won't work)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+RECOMMENDED: PRESS 'a' NOW!
+
+Your terminal with npm start should still be showing:
+
+  PS C:\Users\Lenovo\green-legacy-app-base-code-> 
+  
+  i - run on iOS
+  a - run on Android
+  d - open Dev Menu
+  r - reload app
+
+Just press: a
+
+Then Enter
+
+That's it! Android emulator will launch your app! 📱
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WHAT YOU'LL SEE (in order):
+
+1. Android build logs in terminal (1-2 minutes)
+2. "Launching..." messages
+3. Android emulator opens/focuses
+4. Your app loads
+5. Onboarding screen appears ✨
+   - 3 slides
+   - Carousel dots
+   - "Get Started" button
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+
+❌ "a" key doesn't work in terminal
+   → Click in the terminal window first (focus it)
+   → Then press 'a'
+
+❌ "No emulator running"
+   → Open Android Studio
+   → Device Manager
+   → Launch an emulator first
+   → Then press 'a' in terminal
+
+❌ App doesn't load
+   → Check server is running: http://localhost:4000
+   → Check metro is running: port 8081
+   → Check both terminals have no errors
+
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Terminal Status:
+  Port: 8081
+  Status: ✅ RUNNING
+  Mode: React Native CLI
+  Terminal ID: 34b2881a-6d0b-4b2e-a839-f78ef41d3e1e
+
+═══════════════════════════════════════════════════════════════════════════════
+
+JUST PRESS 'a' AND WATCH YOUR APP LOAD! 🚀
