@@ -3,6 +3,9 @@
     "name": "Green Legacy",
     "slug": "green-legacy-app",
     "version": "1.0.0",
+    "updates": {
+      "enabled": false
+    },
     "assetBundlePatterns": [
       "**/*"
     ],

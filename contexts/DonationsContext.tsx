@@ -1,7 +1,32 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
-const API_BASE = 'http://10.0.2.2:4000/api';
+const resolveApiBase = () => {
+  try {
+    const dbg = (Constants as any).manifest?.debuggerHost || (Constants as any).manifest2?.debuggerHost;
+    if (dbg && typeof dbg === 'string') {
+      const host = dbg.split(':')[0];
+      return `http://${host}:4000/api`;
+    }
+  } catch (e) {}
+
+  if (Platform.OS === 'android') return 'http://10.0.2.2:4000/api';
+  return 'http://localhost:4000/api';
+};
+
+const API_BASE = resolveApiBase();
+
+// Helper function to fetch with timeout
+const fetchWithTimeout = (url: string, options?: RequestInit, timeout: number = 10000) => {
+  return Promise.race([
+    fetch(url, options),
+    new Promise<Response>((_, reject) =>
+      setTimeout(() => reject(new Error('API request timeout')), timeout)
+    )
+  ]);
+};
 
 export interface Donation {
   id: string;
@@ -13,6 +38,9 @@ export interface Donation {
   date: string;
   message?: string;
   location?: string;
+  photo?: string;
+  donorName?: string;
+  certificateId?: string;
 }
 
 interface Stats {
@@ -38,38 +66,40 @@ export const DonationsProvider = ({ children }: { children: ReactNode }) => {
 
   const refresh = async () => {
     try {
-      const res = await fetch(`${API_BASE}/donations`);
+      const res = await fetchWithTimeout(`${API_BASE}/donations`, undefined, 10000);
       if (!res.ok) throw new Error('Failed to fetch donations');
       const json = await res.json();
       setDonations(json.donations || []);
       
-      const sres = await fetch(`${API_BASE}/stats`);
+      const sres = await fetchWithTimeout(`${API_BASE}/stats`, undefined, 10000);
       if (!sres.ok) throw new Error('Failed to fetch stats');
       const sjson = await sres.json();
       setStats(sjson.stats || { treesPlanted: 0, oxygenGenerated: 0, co2Absorbed: 0, points: 0 });
     } catch (err) {
       console.warn('refresh failed', err);
+      // Set default values if API fails
+      setDonations([]);
+      setStats({ treesPlanted: 0, oxygenGenerated: 0, co2Absorbed: 0, points: 0 });
     }
   };
 
   // Only refresh when user logs in/out
   useEffect(() => {
-    if (auth.isLoggedIn) {
-      refresh();
-    } else {
-      setDonations([]);
-      setStats({ treesPlanted: 0, oxygenGenerated: 0, co2Absorbed: 0, points: 0 });
-    }
+    // To avoid Metro/dev-server hangs when the device cannot reach a local backend
+    // we DO NOT automatically refresh donations on startup in the dev build.
+    // Call `refresh()` manually (for example after login or via a pull-to-refresh) to fetch data.
+    // This prevents automatic network calls that block startup when API is not reachable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return;
   }, [auth.isLoggedIn]);
 
   const addDonation = async (d: Omit<Donation, 'id'>) => {
     try {
-      const res = await fetch(`${API_BASE}/donations`, {
+      const res = await fetchWithTimeout(`${API_BASE}/donations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...d, userId: auth.user?.id })
-      });
+      }, 10000);
       if (!res.ok) throw new Error('Failed to add donation');
       const json = await res.json();
       await refresh();

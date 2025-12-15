@@ -1,55 +1,144 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 
-const AppHeader: React.FC<{ onProfilePress?: () => void; onNotifPress?: () => void; unread?: number }> = ({ onProfilePress, onNotifPress, unread = 0 }) => {
-  const { isLoggedIn } = useAuth();
-  const anim = React.useRef(new Animated.Value(0)).current;
+const AppHeader: React.FC<{ 
+  onProfilePress?: () => void
+  onNotifPress?: () => void
+  onSearchPress?: () => void
+  onOverflowPress?: () => void
+  unread?: number 
+}> = ({ 
+  onProfilePress, 
+  onNotifPress,
+  onSearchPress,
+  onOverflowPress,
+  unread = 0 
+}) => {
+  const { isLoggedIn, user } = useAuth();
+  const displayName = isLoggedIn ? (user?.name || 'User') : 'Guest';
 
-  React.useEffect(() => {
-    if (unread > 0) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(anim, { toValue: 1, duration: 700, useNativeDriver: true }),
-          Animated.timing(anim, { toValue: 0, duration: 700, useNativeDriver: true })
-        ])
-      ).start();
-    }
-  }, [unread, anim]);
-
-  const dotScale = anim.interpolate({ inputRange: [0, 1], outputRange: [1, 1.5] });
+  // Get first letter of display name for avatar
+  const avatarLetter = displayName.charAt(0).toUpperCase();
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={onProfilePress} style={styles.side}>
-        <Text style={styles.link}>{isLoggedIn ? 'Profile' : 'Guest'}</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>Green Legacy</Text>
-      <TouchableOpacity onPress={onNotifPress} style={styles.side}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.link}>🔔</Text>
-          {unread > 0 && (
-            <Animated.View style={[styles.unreadDot, { transform: [{ scale: dotScale }] }]} />
-          )}
+    <SafeAreaView style={styles.safeArea} edges={['top']} accessibilityRole="header">
+      <View style={styles.container}>
+      {/* Left: Avatar Button */}
+      <TouchableOpacity 
+        onPress={onProfilePress} 
+        style={styles.avatarButton}
+        accessibilityLabel="profile-button"
+      >
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{avatarLetter}</Text>
         </View>
       </TouchableOpacity>
-    </View>
+
+      {/* Center: Title (absolutely centered to avoid overlap with icons) */}
+      <Text style={styles.title} numberOfLines={1} accessible accessibilityRole="header">Green Legacy</Text>
+
+      {/* Right: Notifications only (search/overflow removed per design) */}
+      <View style={styles.rightSection}>
+        <TouchableOpacity 
+          onPress={onNotifPress} 
+          style={styles.iconBtn}
+          accessibilityLabel="notifications-button"
+        >
+          <Text style={styles.icon}>🔔</Text>
+          {unread > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{unread}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: '#fff',
+  },
   container: {
-    height: 56,
+    minHeight: 56,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 12,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E6F4EA',
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3
   },
-  title: { fontSize: 18, fontWeight: '700', color: '#2E8B57' },
-  side: { width: 80, alignItems: 'center' },
-  link: { color: '#2E8B57' },
-  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#FF6B6B', marginLeft: 4 }
+  avatarButton: {
+    paddingRight: 8
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#E0F2E9',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#C8E6C9'
+  },
+  avatarText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1B5E20'
+  },
+  title: {
+    position: 'absolute',
+    left: 56,
+    right: 56,
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#1B5E20',
+    textAlign: 'center',
+    marginHorizontal: 8
+  },
+  rightSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  iconBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+    position: 'relative'
+  },
+  icon: {
+    fontSize: 18,
+    color: '#1B5E20'
+  },
+  badge: {
+    position: 'absolute',
+    right: -2,
+    top: -2,
+    backgroundColor: '#FF6B6B',
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 9,
+    fontWeight: '700'
+  }
 });
 
 export default AppHeader;
