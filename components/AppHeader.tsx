@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-const AppHeader: React.FC<{ unread?: number }> = ({ unread = 0 }) => {
+const AppHeader: React.FC<{ unread?: number; title?: string }> = ({ unread = 0, title }) => {
   const navigation = useNavigation<any>();
   const { isLoggedIn, user, logout } = useAuth();
   const displayName = isLoggedIn ? (user?.name || 'User') : 'Guest';
@@ -35,7 +35,7 @@ const AppHeader: React.FC<{ unread?: number }> = ({ unread = 0 }) => {
         </TouchableOpacity>
 
         {/* Center: Title */}
-        <Text style={styles.title} numberOfLines={1} accessible accessibilityRole="header">Green Legacy</Text>
+        <Text style={styles.title} numberOfLines={1} accessible accessibilityRole="header">{title || 'Green Legacy'}</Text>
 
         {/* Right: Notifications only */}
         <View style={styles.rightSection}>

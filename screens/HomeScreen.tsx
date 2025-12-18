@@ -293,7 +293,7 @@ const UserTreesRow: React.FC = () => {
   const { donations } = useDonations();
   const auth = useAuth();
   const userId = auth.user?.id;
-  const userTrees = donations
+  const userTrees = (donations || [])
     .filter((d) => d.userId === userId)
     .reduce((s, d) => s + (d.trees || 0), 0);
   const displayName = auth.user ? auth.user.name : "You?";

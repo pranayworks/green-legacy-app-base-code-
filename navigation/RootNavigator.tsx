@@ -12,7 +12,7 @@ import ContactScreen from '../screens/ContactScreen';
 import MediaScreen from '../screens/MediaScreen';
 import GetInvolvedScreen from '../screens/GetInvolvedScreen';
 import VolunteerForm from '../screens/VolunteerForm';
-import CSRForm from '../screens/CSRForm';
+import CSRScreen from '../screens/CSRScreen';
 import AboutScreen from '../screens/AboutScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import CertificateScreen from '../screens/CertificateScreen';
@@ -66,7 +66,7 @@ const RootNavigator = () => (
     <Stack.Screen name="About" component={AboutScreen} />
     <Stack.Screen name="GetInvolved" component={GetInvolvedScreen} />
     <Stack.Screen name="Volunteer" component={VolunteerForm} />
-  <Stack.Screen name="CSR" component={CSRForm} />
+  <Stack.Screen name="CSR" component={CSRScreen} />
   <Stack.Screen name="Dashboard" component={DashboardScreen} />
   <Stack.Screen name="Rewards" component={RewardsScreen} />
     <Stack.Screen name="Subscriptions" component={SubscriptionsScreen} />

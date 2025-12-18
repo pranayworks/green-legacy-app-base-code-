@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   View,
   Text,
@@ -10,13 +9,12 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
 import AppHeader from '../components/AppHeader';
 
 export default function GetInvolvedScreen() {
-  const navigation = useNavigation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -30,11 +28,11 @@ export default function GetInvolvedScreen() {
 
   const handleSubmit = async () => {
     if (!fullName || !email || !phone || !interestArea || !experience) {
-      alert('Please fill in all required fields');
+      Alert.alert('Missing Information', 'Please fill in all required fields');
       return;
     }
     if (!agreedToTerms) {
-      alert('Please agree to the terms');
+      Alert.alert('Terms Required', 'Please agree to the terms');
       return;
     }
     setLoading(true);
@@ -54,14 +52,14 @@ export default function GetInvolvedScreen() {
         setSuccessMessage('');
       }, 2000);
     } catch (error) {
-      alert('Error submitting form. Please try again.');
+      Alert.alert('Error', 'Error submitting form. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <AppHeader title="Get Involved" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* HERO SECTION */}
@@ -144,7 +142,7 @@ export default function GetInvolvedScreen() {
           <View style={styles.dropdownContainer}>
             <Picker
               selectedValue={interestArea}
-              onValueChange={setInterestArea}
+              onValueChange={(itemValue) => setInterestArea(itemValue)}
               style={styles.picker}
             >
               <Picker.Item label="Select Interest Area *" value="" />
@@ -159,7 +157,7 @@ export default function GetInvolvedScreen() {
           <View style={styles.dropdownContainer}>
             <Picker
               selectedValue={experience}
-              onValueChange={setExperience}
+              onValueChange={(itemValue) => setExperience(itemValue)}
               style={styles.picker}
             >
               <Picker.Item label="Select Experience Level *" value="" />
@@ -210,7 +208,7 @@ export default function GetInvolvedScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

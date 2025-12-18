@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
   View,
   Text,
@@ -10,6 +9,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AppHeader from '../components/AppHeader';
@@ -29,11 +29,11 @@ export default function CSRScreen() {
 
   const handleSubmit = async () => {
     if (!companyName || !contactName || !email || !phone || !companySize || !industry || !budget) {
-      alert('Please fill in all required fields');
+      Alert.alert('Missing Information', 'Please fill in all required fields');
       return;
     }
     if (!agreedToTerms) {
-      alert('Please agree to the terms');
+      Alert.alert('Terms Required', 'Please agree to the terms');
       return;
     }
     setLoading(true);
@@ -54,14 +54,14 @@ export default function CSRScreen() {
         setSuccessMessage('');
       }, 2000);
     } catch (error) {
-      alert('Error submitting form. Please try again.');
+      Alert.alert('Error', 'Error submitting form. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <AppHeader title="CSR" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {/* HERO SECTION */}
@@ -215,7 +215,7 @@ export default function CSRScreen() {
           <View style={styles.dropdownContainer}>
             <Picker
               selectedValue={companySize}
-              onValueChange={setCompanySize}
+              onValueChange={(itemValue) => setCompanySize(itemValue)}
               style={styles.picker}
             >
               <Picker.Item label="Select Company Size *" value="" />
@@ -229,7 +229,7 @@ export default function CSRScreen() {
           <View style={styles.dropdownContainer}>
             <Picker
               selectedValue={industry}
-              onValueChange={setIndustry}
+              onValueChange={(itemValue) => setIndustry(itemValue)}
               style={styles.picker}
             >
               <Picker.Item label="Select Industry *" value="" />
@@ -245,7 +245,7 @@ export default function CSRScreen() {
           <View style={styles.dropdownContainer}>
             <Picker
               selectedValue={budget}
-              onValueChange={setBudget}
+              onValueChange={(itemValue) => setBudget(itemValue)}
               style={styles.picker}
             >
               <Picker.Item label="Select Budget Range *" value="" />
@@ -297,7 +297,7 @@ export default function CSRScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 

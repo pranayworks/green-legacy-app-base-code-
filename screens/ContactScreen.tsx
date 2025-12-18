@@ -38,12 +38,12 @@ const ContactScreen: React.FC = () => {
   ];
 
   return (
-    <ScrollView
-      style={styles.screen}
-      contentContainerStyle={styles.contentContainer}
-    >
+    <View style={styles.screen}>
       <AppHeader />
-
+      <ScrollView
+        style={styles.screen}
+        contentContainerStyle={styles.contentContainer}
+      >
       {/* Header */}
       <View style={styles.headerSection}>
         <Text style={styles.headerEmoji}>💬</Text>
@@ -117,7 +117,8 @@ const ContactScreen: React.FC = () => {
       </View>
 
       <View style={{ height: 20 }} />
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
