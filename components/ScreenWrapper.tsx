@@ -30,7 +30,7 @@ const ScreenWrapper: React.FC<Props> = ({
 
   return (
     <SafeAreaView style={[styles.safe, style] as any}>
-      <AppHeader onProfilePress={onProfilePress} onNotifPress={onNotifPress} />
+  <AppHeader />
       {scrollEnabled ? (
         <ScrollView ref={scrollRef} contentContainerStyle={{ paddingBottom: 20 }} keyboardShouldPersistTaps="handled">
           {content}

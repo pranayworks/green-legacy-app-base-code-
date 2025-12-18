@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Prettier format all screens",
+			"type": "shell",
+			"command": "npx prettier --write \"screens/**/*.tsx\"",
+			"args": [],
+			"group": "build"
+		}
+	]
+}

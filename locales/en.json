@@ -1,0 +1,140 @@
+{
+  "common": {
+    "appName": "Green Legacy",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "logout": "Logout",
+    "language": "Language",
+    "settings": "Settings"
+  },
+  "home": {
+    "title": "Home",
+    "heroHeadline": "Planting Roots for Tomorrow.",
+    "heroSubtext": "We transform celebrations into living legacies—trees that grow with your memories.",
+    "storyTitle": "Where this idea came from",
+    "storyText": "On a birthday, we asked: what if each celebration left a gift for the planet? Green Legacy turns moments into trees—visible, trackable, and cherished.",
+    "whyTreesTitle": "Why trees matter",
+    "whyTreesBullets": [
+      "Absorb CO₂ and purify air.",
+      "Prevent soil erosion and support water cycles.",
+      "Create habitats, cool cities, and restore balance.",
+      "A living memory that grows with time."
+    ],
+    "donateButton": "Donate",
+    "volunteerButton": "Volunteer",
+    "subscribeButton": "Subscribe",
+    "impactCounters": {
+      "treesPlanted": "Trees Planted",
+      "co2Absorbed": "CO₂ Absorbed",
+      "waterSaved": "Water Saved",
+      "volunteersEngaged": "Volunteers Engaged"
+    }
+  },
+  "donate": {
+    "title": "Donate",
+    "loggedOutMessage": "Create a living memory—sponsor a tree today. Log in to track certificates, locations, and impact.",
+    "loginButton": "Login",
+    "signupButton": "Sign Up",
+    "formTitle": "Sponsor a Tree",
+    "name": "Your Name",
+    "occasion": "Occasion",
+    "recipientName": "Recipient Name (Optional)",
+    "location": "Location Preference",
+    "quantity": "Number of Trees",
+    "message": "Message (Optional)",
+    "termsCheckbox": "I accept Terms & Privacy Policy",
+    "submitButton": "Submit Donation",
+    "errorMessage": "Please enter all required details ⚠️",
+    "successMessage": "Thank you! Your trees are now part of Green Legacy."
+  },
+  "login": {
+    "title": "LOGIN",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "LOG IN",
+    "signupPrompt": "Don't have an account?",
+    "signupText": "Join Green Legacy and plant trees for special occasions. Track your impact and grow your legacy.",
+    "signupButton": "SIGN UP"
+  },
+  "signup": {
+    "title": "SIGN UP",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "age": "Age",
+    "phone": "Phone Number",
+    "signupButton": "SIGN UP",
+    "loginPrompt": "Already have an account?",
+    "termsCheckbox": "I accept Terms & Privacy Policy"
+  },
+  "profile": {
+    "title": "My Profile",
+    "dashboard": "My Dashboard",
+    "subscriptions": "My Subscriptions",
+    "rewards": "Rewards",
+    "notifications": "Notifications",
+    "donate": "Donate a Tree",
+    "signOut": "Sign Out",
+    "profileStats": {
+      "treesPlanted": "Trees Planted",
+      "oxygenGenerated": "Oxygen Generated",
+      "co2Absorbed": "CO₂ Absorbed",
+      "points": "Points"
+    }
+  },
+  "getInvolved": {
+    "title": "Get Involved",
+    "heroTitle": "Volunteers Beyond Borders",
+    "heroSubtitle": "Change the world — and yourself. Start your volunteer journey today.",
+    "whyVolunteerTitle": "Why Volunteer?",
+    "whyVolunteerSubtitle": "Volunteering helps people, animals, and the environment. It also helps you grow.",
+    "benefits": [
+      "Make a difference",
+      "Discover the world",
+      "Improve your language skills",
+      "Grow your confidence"
+    ],
+    "formTitle": "Join as a Volunteer",
+    "formSubtitle": "Fill in your details and we'll get in touch soon!",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location/City",
+    "interestArea": "Interest Area",
+    "experience": "Experience Level",
+    "aboutYourself": "Tell us about yourself",
+    "termsCheckbox": "I agree to volunteer with Green Legacy",
+    "submitButton": "Join as Volunteer",
+    "successMessage": "Thank you! We'll contact you soon 🌱"
+  },
+  "csr": {
+    "title": "Corporate Social Responsibility",
+    "heroTitle": "Partner with Green Legacy",
+    "heroSubtitle": "Drive corporate impact. Build a sustainable future together.",
+    "whyPartnerTitle": "Why Partner with Green Legacy?",
+    "benefits": [
+      "Global Environmental Impact",
+      "Build Brand Trust",
+      "Engage Your Team",
+      "Measurable Impact Reports"
+    ],
+    "packages": {
+      "starter": "STARTER",
+      "growth": "GROWTH",
+      "enterprise": "ENTERPRISE"
+    }
+  },
+  "more": {
+    "title": "More",
+    "calendar": "Open Google Calendar",
+    "faq": "FAQ / Help",
+    "partners": "Partners / CSR",
+    "videos": "Learning Videos",
+    "rateUs": "Rate Us",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy"
+  }
+}

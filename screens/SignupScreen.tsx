@@ -1,69 +1,194 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Alert, TouchableOpacity } from 'react-native';
-import ScreenWrapper from '../components/ScreenWrapper';
-import AnimatedButton from '../components/AnimatedButton';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigation } from '@react-navigation/native';
+
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from "react-native";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const SignupScreen: React.FC = () => {
   const auth = useAuth();
-  const nav = useNavigation<any>();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [age, setAge] = useState('');
-  const [password, setPassword] = useState('');
-  const [terms, setTerms] = useState(false);
+  const navigation = useNavigation<any>();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!terms) return Alert.alert('Please accept Terms & Privacy Policy');
-    if (!email || !password) return Alert.alert('Please enter email and password');
+    if (!email || !password) {
+      Alert.alert("Please enter email and password");
+      return;
+    }
     setLoading(true);
     try {
-      await auth.signupWithCredentials(email.trim(), password, { name: name || undefined, phone: phone || undefined, age: age ? Number(age) : undefined });
-      Alert.alert('Welcome', `Welcome ${auth.user?.name || ''}`);
-      // If profile incomplete (missing phone or age), prompt to complete
-      if (!auth.user?.phone || !auth.user?.age) {
-        setTimeout(() => nav.navigate('Profile' as any), 600);
-      } else {
-        nav.navigate('Main' as any);
-      }
+      await auth.signupWithCredentials(email.trim(), password, {
+        name: name || undefined,
+        phone: phone || undefined,
+        age: age ? Number(age) : undefined,
+      });
+      Alert.alert("Welcome", `Welcome ${auth.user?.name || ""}`);
+      navigation.navigate("Main");
     } catch (err) {
-      console.warn('Signup failed', err);
-      Alert.alert('Signup failed', 'Please try again');
+      console.warn("Signup error:", err);
+      Alert.alert("Signup failed", "Please try again");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScreenWrapper>
-      <Text style={styles.title}>Create your account</Text>
-
-      <TextInput placeholder="Full name" style={styles.input} value={name} onChangeText={setName} />
-      <TextInput placeholder="you@example.com" style={styles.input} value={email} onChangeText={setEmail} keyboardType="email-address" />
-      <TextInput placeholder="Phone (optional)" style={styles.input} value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
-      <TextInput placeholder="Age (optional)" style={styles.input} value={age} onChangeText={setAge} keyboardType="number-pad" />
-      <TextInput placeholder="Password" secureTextEntry style={styles.input} value={password} onChangeText={setPassword} />
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
-        <TouchableOpacity onPress={() => setTerms(!terms)} style={{ width: 22, height: 22, borderRadius: 4, borderWidth: 1, borderColor: '#4CAF50', backgroundColor: terms ? '#4CAF50' : '#fff', marginRight: 10 }} />
-        <Text>I accept the <Text style={{ color: '#1B5E20', fontWeight: '700' }} onPress={() => nav.navigate('Terms' as any)}>Terms & Privacy Policy</Text></Text>
+    <View style={styles.container}>
+      {/* LEFT PANEL */}
+      <View style={styles.leftPanel}>
+        <Text style={styles.leftTitle}>Already have an account?</Text>
+        <Text style={styles.leftSubtitle}>
+          Log in to track your impact, manage your donations, and grow your legacy with Green Legacy.
+        </Text>
+        <TouchableOpacity
+          style={styles.signupButton}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.signupButtonText}>LOG IN</Text>
+        </TouchableOpacity>
       </View>
 
-      <AnimatedButton title={loading ? 'Creating…' : 'Sign up'} onPress={handleSignup} style={{ marginTop: 20 }} />
-
-      <View style={{ marginTop: 12 }}>
-        <Text style={{ color: '#666' }}>Already have an account? <Text style={{ color: '#1B5E20', fontWeight: '700' }} onPress={() => nav.navigate('Login' as any)}>Login</Text></Text>
+      {/* RIGHT PANEL */}
+      <View style={styles.rightPanel}>
+        <Text style={styles.loginTitle}>SIGN UP</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Full name"
+          placeholderTextColor="#999"
+          value={name}
+          onChangeText={setName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#999"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Phone (optional)"
+          placeholderTextColor="#999"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Age (optional)"
+          placeholderTextColor="#999"
+          value={age}
+          onChangeText={setAge}
+          keyboardType="number-pad"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={handleSignup}
+          disabled={loading}
+        >
+          <Text style={styles.loginButtonText}>{loading ? "SIGNING UP..." : "SIGN UP"}</Text>
+        </TouchableOpacity>
       </View>
-    </ScreenWrapper>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  title: { fontSize: 22, fontWeight: '800', color: '#1B5E20', marginBottom: 8 },
-  input: { backgroundColor: '#fff', paddingVertical: 10, paddingHorizontal: 12, borderRadius: 8, borderWidth: 1, borderColor: '#E6F4EA', marginTop: 10 }
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+  },
+  leftPanel: {
+    flex: 1,
+    backgroundColor: '#3a3a3a',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 40,
+    paddingVertical: 60,
+  },
+  leftTitle: {
+    fontSize: 28,
+    fontWeight: '300',
+    color: '#fff',
+    marginBottom: 16,
+    lineHeight: 35,
+  },
+  leftSubtitle: {
+    fontSize: 14,
+    color: '#ccc',
+    marginBottom: 32,
+    lineHeight: 20,
+  },
+  signupButton: {
+    borderWidth: 1,
+    borderColor: '#fff',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 4,
+  },
+  signupButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+  rightPanel: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    paddingHorizontal: 40,
+    paddingVertical: 60,
+  },
+  loginTitle: {
+    fontSize: 28,
+    fontWeight: '300',
+    color: '#1B5E20',
+    marginBottom: 32,
+    letterSpacing: 2,
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    paddingVertical: 12,
+    fontSize: 14,
+    marginBottom: 24,
+    color: '#333',
+  },
+  loginButton: {
+    backgroundColor: '#1B5E20',
+    paddingVertical: 14,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
 });
 
 export default SignupScreen;

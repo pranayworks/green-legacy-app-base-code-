@@ -5,8 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import AboutScreen from '../screens/AboutScreen';
 import DonateScreen from '../screens/DonateScreen';
 import ImpactScreen from '../screens/ImpactScreen';
-import MediaScreen from '../screens/MediaScreen';
 import MoreScreen from '../screens/MoreScreen';
+// import GetInvolvedScreen from '../screens/GetInvolvedScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 // Chatbot is handled as a floating button that navigates to a root screen
 import ChatbotFloatingButton from '../components/ChatbotFloatingButton';
@@ -47,7 +47,7 @@ const MainTabNavigator = () => {
             Home: { icon: '🏠', label: 'Home' },
             Donate: { icon: '🤝', label: 'Donate' },
             Impact: { icon: '🌳', label: 'Impact' },
-            Media: { icon: '📷', label: 'Media' },
+            About: { icon: 'ℹ️', label: 'About' },
             More: { icon: '⋯', label: 'More' }
           };
           const config = tabIcons[route.name];
@@ -55,13 +55,12 @@ const MainTabNavigator = () => {
         }
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Donate" component={DonateScreen} />
-      <Tab.Screen name="Impact" component={ImpactScreen} />
-      <Tab.Screen name="Media" component={MediaScreen} />
-      {/* Chatbot is a floating button, not a tab */}
-      <Tab.Screen name="More" component={MoreScreen} />
-      {/* Floating chatbot button rendered on top */}
+  <Tab.Screen name="Home" component={HomeScreen} />
+  <Tab.Screen name="Donate" component={DonateScreen} />
+  <Tab.Screen name="Impact" component={ImpactScreen} />
+  <Tab.Screen name="About" component={AboutScreen} />
+  <Tab.Screen name="More" component={MoreScreen} />
+  {/* Floating chatbot button rendered on top */}
       </Tab.Navigator>
       <ChatbotFloatingButton />
     </>

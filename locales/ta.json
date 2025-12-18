@@ -1,0 +1,18 @@
+{
+  "common": {
+    "appName": "பசுமை பரம்பரை",
+    "ok": "சரி",
+    "cancel": "ரத்து செய்",
+    "logout": "வெளியேறு"
+  },
+  "home": {
+    "title": "முகப்பு",
+    "heroHeadline": "நாளைக்கான வேர்களை நடவு.",
+    "donateButton": "நன்கொடை",
+    "volunteerButton": "தன்னார்வலர்"
+  },
+  "donate": {
+    "title": "நன்கொடை",
+    "submitButton": "நன்கொடை சமர்ப்பிக்கவும்"
+  }
+}

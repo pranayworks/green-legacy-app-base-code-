@@ -1,81 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import ProfileMenu from './ProfileMenu';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigation } from '@react-navigation/native';
 
-const AppHeader: React.FC<{ 
-  onProfilePress?: () => void
-  onNotifPress?: () => void
-  onSearchPress?: () => void
-  onOverflowPress?: () => void
-  unread?: number 
-}> = ({ 
-  onProfilePress, 
-  onNotifPress,
-  onSearchPress,
-  onOverflowPress,
-  unread = 0 
-}) => {
-  const { isLoggedIn, user } = useAuth();
+const AppHeader: React.FC<{ unread?: number }> = ({ unread = 0 }) => {
+  const navigation = useNavigation<any>();
+  const { isLoggedIn, user, logout } = useAuth();
   const displayName = isLoggedIn ? (user?.name || 'User') : 'Guest';
-
-  // Get first letter of display name for avatar
   const avatarLetter = displayName.charAt(0).toUpperCase();
+  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
+
+  const handleProfilePress = () => {
+    if (isLoggedIn) {
+      navigation.navigate('Profile');
+    } else {
+      setIsProfileMenuVisible(true);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']} accessibilityRole="header">
-      <View style={styles.container}>
-      {/* Left: Avatar Button */}
-      <TouchableOpacity 
-        onPress={onProfilePress} 
-        style={styles.avatarButton}
-        accessibilityLabel="profile-button"
-      >
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>{avatarLetter}</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Center: Title (absolutely centered to avoid overlap with icons) */}
-      <Text style={styles.title} numberOfLines={1} accessible accessibilityRole="header">Green Legacy</Text>
-
-      {/* Right: Notifications only (search/overflow removed per design) */}
-      <View style={styles.rightSection}>
-        <TouchableOpacity 
-          onPress={onNotifPress} 
-          style={styles.iconBtn}
-          accessibilityLabel="notifications-button"
+      <View style={styles.header}>
+        {/* Left: Avatar Button */}
+        <TouchableOpacity
+          onPress={handleProfilePress}
+          style={styles.avatarButton}
+          accessibilityLabel="profile-button"
         >
-          <Text style={styles.icon}>🔔</Text>
-          {unread > 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{unread}</Text>
-            </View>
-          )}
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>{avatarLetter}</Text>
+          </View>
         </TouchableOpacity>
+
+        {/* Center: Title */}
+        <Text style={styles.title} numberOfLines={1} accessible accessibilityRole="header">Green Legacy</Text>
+
+        {/* Right: Notifications only */}
+        <View style={styles.rightSection}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('NotificationsScreen')}
+            style={styles.iconBtn}
+            accessibilityLabel="notifications-button"
+          >
+            <Text style={styles.icon}>🔔</Text>
+            {unread > 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{unread}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-      </View>
+      {!isLoggedIn && (
+        <ProfileMenu
+          visible={isProfileMenuVisible}
+          onClose={() => setIsProfileMenuVisible(false)}
+          isLoggedIn={isLoggedIn}
+          user={user}
+          onLogin={() => navigation.navigate('Login')}
+          onSignup={() => navigation.navigate('Signup')}
+          onDashboard={() => navigation.navigate('Dashboard')}
+          onSubscriptions={() => navigation.navigate('Subscriptions')}
+          onLogout={logout}
+        />
+      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
+    position: 'relative',
   },
-  container: {
-    minHeight: 56,
+  header: {
+    height: 56,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E6F4EA',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    backgroundColor: 'transparent',
+    elevation: 4,
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3
+    zIndex: 1000,
   },
   avatarButton: {
     paddingRight: 8
@@ -96,19 +107,18 @@ const styles = StyleSheet.create({
     color: '#1B5E20'
   },
   title: {
-    position: 'absolute',
-    left: 56,
-    right: 56,
-    fontSize: 16,
-    fontWeight: '800',
+    fontSize: 22,
+    fontWeight: 'bold',
     color: '#1B5E20',
     textAlign: 'center',
-    marginHorizontal: 8
+    marginLeft: 8,
+    flex: 1,
   },
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    gap: 8,
   },
   iconBtn: {
     width: 44,
@@ -120,8 +130,8 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   icon: {
-    fontSize: 18,
-    color: '#1B5E20'
+    fontSize: 22,
+    color: '#1f2933', // dark for contrast
   },
   badge: {
     position: 'absolute',

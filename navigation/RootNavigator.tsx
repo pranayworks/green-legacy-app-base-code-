@@ -20,7 +20,7 @@ import SubscriptionsScreen from '../screens/SubscriptionsScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import TermsScreen from '../screens/TermsScreen';
 import PrivacyScreen from '../screens/PrivacyScreen';
-import ChatbotScreen from '../screens/ChatbotScreen';
+
 import RewardsScreen from '../screens/RewardsScreen';
 
 export type RootStackParamList = {
@@ -66,10 +66,9 @@ const RootNavigator = () => (
     <Stack.Screen name="About" component={AboutScreen} />
     <Stack.Screen name="GetInvolved" component={GetInvolvedScreen} />
     <Stack.Screen name="Volunteer" component={VolunteerForm} />
-    <Stack.Screen name="CSR" component={CSRForm} />
+  <Stack.Screen name="CSR" component={CSRForm} />
   <Stack.Screen name="Dashboard" component={DashboardScreen} />
   <Stack.Screen name="Rewards" component={RewardsScreen} />
-  <Stack.Screen name="Chatbot" component={ChatbotScreen} />
     <Stack.Screen name="Subscriptions" component={SubscriptionsScreen} />
     <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
     <Stack.Screen name="Terms" component={TermsScreen} />

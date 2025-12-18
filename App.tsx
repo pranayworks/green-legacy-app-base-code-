@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import './utils/i18n';
+import { initializeLanguage } from './utils/i18n';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -46,15 +48,12 @@ class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasErr
 const navigationRef = createNavigationContainerRef();
 
 const App = () => {
-  React.useEffect(() => {
+  useEffect(() => {
     try {
-      // expose a lightweight global navigation helper used by header/menu to trigger navigation
       (global as any).__NAVIGATION__ = navigationRef;
-    } catch (e) {
-      // ignore in environments where global cannot be written
-    }
+    } catch (e) {}
+    initializeLanguage();
   }, []);
-  // render immediately without delay to avoid runtime not ready errors
   return (
     <ErrorBoundary>
       <SafeAreaProvider>

@@ -1,13 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ScreenWrapper from '../components/ScreenWrapper';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import ScreenWrapper from "../components/ScreenWrapper";
 
 const dummy = [
-  { name: 'Asha', trees: 42, score: 420 },
-  { name: 'Ravi', trees: 36, score: 360 },
-  { name: 'Priya', trees: 28, score: 280 },
-  { name: 'Kumar', trees: 20, score: 200 },
-  { name: 'Sneha', trees: 15, score: 150 }
+  { name: "Asha", trees: 42, score: 420 },
+  { name: "Ravi", trees: 36, score: 360 },
+  { name: "Priya", trees: 28, score: 280 },
+  { name: "Kumar", trees: 20, score: 200 },
+  { name: "Sneha", trees: 15, score: 150 },
 ];
 
 const LeaderboardScreen: React.FC = () => {
@@ -27,12 +27,23 @@ const LeaderboardScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  title: { fontSize: 22, fontWeight: '800', color: '#1B5E20', marginBottom: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#E6F4EA' },
-  rank: { width: 28, fontWeight: '700' },
+  title: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#1B5E20",
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E6F4EA",
+  },
+  rank: { width: 28, fontWeight: "700" },
   name: { flex: 1 },
-  trees: { width: 110, textAlign: 'right' },
-  score: { width: 60, textAlign: 'right' }
+  trees: { width: 110, textAlign: "right" },
+  score: { width: 60, textAlign: "right" },
 });
 
 export default LeaderboardScreen;
