@@ -1,67 +1,105 @@
+
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
+
 import HomeScreen from '../screens/HomeScreen';
 import AboutScreen from '../screens/AboutScreen';
 import DonateScreen from '../screens/DonateScreen';
 import ImpactScreen from '../screens/ImpactScreen';
 import MoreScreen from '../screens/MoreScreen';
-// import GetInvolvedScreen from '../screens/GetInvolvedScreen';
-import NotificationsScreen from '../screens/NotificationsScreen';
-// Chatbot is handled as a floating button that navigates to a root screen
+import GetInvolvedScreen from '../screens/GetInvolvedScreen';
 import ChatbotFloatingButton from '../components/ChatbotFloatingButton';
 import { useAuth } from '../contexts/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
-// Simple icon components (emoji + text)
-const TabIcon: React.FC<{ icon: string; label: string; color: string }> = ({ icon, label, color }) => (
-  <View style={styles.tabIcon}>
-    <Text style={{ fontSize: 20 }}>{icon}</Text>
-    <Text style={[styles.tabLabel, { color }]}>{label}</Text>
-  </View>
-);
-
-// Custom floating Chatbot button used as the central tab button
-const ChatbotButton: React.FC<{ children: React.ReactNode; onPress?: (...args: any[]) => void }> = ({ children, onPress }) => (
-  <View style={styles.chatbotWrapper} pointerEvents="box-none">
-    <TouchableOpacity activeOpacity={0.85} onPress={onPress} style={styles.chatbotButton}>
-      {children}
-    </TouchableOpacity>
-  </View>
-);
-
 const MainTabNavigator = () => {
   const { isLoggedIn } = useAuth();
+
+  // Debug logs to identify invalid component imports
+  console.log('HomeScreen', HomeScreen);
+  console.log('DonateScreen', DonateScreen);
+  console.log('ImpactScreen', ImpactScreen);
+  console.log('GetInvolvedScreen', GetInvolvedScreen);
+  console.log('AboutScreen', AboutScreen);
+  console.log('MoreScreen', MoreScreen);
 
   return (
     <>
       <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: '#2E8B57',
-        tabBarInactiveTintColor: '#999',
-        tabBarLabel: ({ color }) => {
-          const tabIcons: Record<string, { icon: string; label: string }> = {
-            Home: { icon: '🏠', label: 'Home' },
-            Donate: { icon: '🤝', label: 'Donate' },
-            Impact: { icon: '🌳', label: 'Impact' },
-            About: { icon: 'ℹ️', label: 'About' },
-            More: { icon: '⋯', label: 'More' }
-          };
-          const config = tabIcons[route.name];
-          return config ? <TabIcon icon={config.icon} label={config.label} color={color} /> : null;
-        }
-      })}
-    >
-  <Tab.Screen name="Home" component={HomeScreen} />
-  <Tab.Screen name="Donate" component={DonateScreen} />
-  <Tab.Screen name="Impact" component={ImpactScreen} />
-  <Tab.Screen name="About" component={AboutScreen} />
-  <Tab.Screen name="More" component={MoreScreen} />
-  {/* Floating chatbot button rendered on top */}
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarStyle: styles.tabBar,
+          tabBarActiveTintColor: '#16a34a',
+          tabBarInactiveTintColor: '#999',
+          tabBarLabelPosition: 'below-icon',
+          tabBarIcon: ({ color, size }) => {
+            let icon = '○';
+            let label = '';
+
+            if (route.name === 'Home') {
+              icon = '🏠';
+              label = 'Home';
+            } else if (route.name === 'Donate') {
+              icon = '❤️';
+              label = 'Donate';
+            } else if (route.name === 'Impact') {
+              icon = '🌳';
+              label = 'Impact';
+            } else if (route.name === 'GetInvolved') {
+              icon = '🤝';
+              label = 'Get Involved';
+            } else if (route.name === 'About') {
+              icon = 'ℹ️';
+              label = 'About';
+            } else if (route.name === 'More') {
+              icon = '⋯';
+              label = 'More';
+            }
+
+            return (
+              <View style={styles.tabIconContainer}>
+                <Text style={{ fontSize: 24, marginBottom: 4 }}>{icon}</Text>
+                <Text style={[styles.tabLabel, { color }]}>{label}</Text>
+              </View>
+            );
+          },
+        })}
+      >
+        <Tab.Screen 
+          name="Home" 
+          component={HomeScreen}
+          options={{ title: 'Home' }}
+        />
+        <Tab.Screen 
+          name="Donate" 
+          component={DonateScreen}
+          options={{ title: 'Donate' }}
+        />
+        <Tab.Screen 
+          name="Impact" 
+          component={ImpactScreen}
+          options={{ title: 'Impact' }}
+        />
+        <Tab.Screen 
+          name="GetInvolved" 
+          component={GetInvolvedScreen}
+          options={{ title: 'Get Involved' }}
+        />
+        <Tab.Screen 
+          name="About" 
+          component={AboutScreen}
+          options={{ title: 'About' }}
+        />
+        <Tab.Screen 
+          name="More" 
+          component={MoreScreen}
+          options={{ title: 'More' }}
+        />
       </Tab.Navigator>
+      
+      {/* Floating Chatbot Button */}
       <ChatbotFloatingButton />
     </>
   );
@@ -75,45 +113,25 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === 'ios' ? 28 : 18,
     height: 70,
     borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 0.98)',
     borderTopWidth: 0,
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowOffset: { width: 0, height: 6 },
     shadowRadius: 12,
     elevation: 8,
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    paddingBottom: 4,
   },
-  tabIcon: {
+  tabIconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 56
   },
   tabLabel: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '600',
-    marginTop: 4
-  }
-  ,
-  chatbotWrapper: {
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 40 : 28,
-    alignSelf: 'center',
-    zIndex: 20
+    marginTop: 2,
   },
-  chatbotButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#1B5E20',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.18,
-    shadowOffset: { width: 0, height: 8 },
-    shadowRadius: 10,
-    elevation: 12
-  }
 });
 
 export default MainTabNavigator;

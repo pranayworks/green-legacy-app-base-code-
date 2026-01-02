@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { Ionicons as Icon } from '@expo/vector-icons';
+import { changeLanguage } from '../utils/i18n';
 import {
   View,
   Text,
@@ -73,6 +76,29 @@ const MoreScreen: React.FC = () => {
   const [csrMessage, setCsrMessage] = useState("");
   const [partnerLogos, setPartnerLogos] = useState<string[]>([]);
 
+  const { t, i18n } = useTranslation();
+  const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
+  const LANGUAGES = [
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'hi', name: 'हिंदी (Hindi)', flag: '🇮🇳' },
+    { code: 'ta', name: 'தமிழ் (Tamil)', flag: '🇮🇳' },
+    { code: 'te', name: 'తెలుగు (Telugu)', flag: '🇮🇳' },
+    { code: 'kn', name: 'ಕನ್ನಡ (Kannada)', flag: '🇮🇳' },
+    { code: 'mr', name: 'मराठी (Marathi)', flag: '🇮🇳' },
+    { code: 'bn', name: 'বাংলা (Bengali)', flag: '🇮🇳' },
+  ];
+  const currentLanguage = i18n.language;
+
+  const handleLanguageChange = async (langCode: string) => {
+    await changeLanguage(langCode);
+    setIsLanguageModalVisible(false);
+  };
+
+  const getCurrentLanguageName = () => {
+    const lang = LANGUAGES.find(l => l.code === currentLanguage);
+    return lang ? lang.name : 'English';
+  };
+
   return (
     <ScrollView
       ref={scrollRef}
@@ -81,6 +107,66 @@ const MoreScreen: React.FC = () => {
     >
       <AppHeader />
 
+      {/* ========== LANGUAGE SELECTOR ========== */}
+      <View style={styles.menuSection}>
+        <View style={styles.section}>
+          <TouchableOpacity
+            style={styles.languageButton}
+            onPress={() => setIsLanguageModalVisible(true)}
+          >
+            <View style={styles.languageButtonContent}>
+              <Text style={styles.languageIcon}>🌐</Text>
+              <View style={styles.languageInfo}>
+                <Text style={styles.languageLabel}>{t('common.language') || 'Language'}</Text>
+                <Text style={styles.languageCurrent}>{getCurrentLanguageName()}</Text>
+              </View>
+            </View>
+            <Icon name="chevron-forward" size={20} color="#16a34a" />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          visible={isLanguageModalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setIsLanguageModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Select Language</Text>
+                <TouchableOpacity onPress={() => setIsLanguageModalVisible(false)}>
+                  <Icon name="close" size={24} color="#333" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.languageList}>
+                {LANGUAGES.map((language) => (
+                  <TouchableOpacity
+                    key={language.code}
+                    style={[
+                      styles.languageOption,
+                      currentLanguage === language.code && styles.languageOptionSelected,
+                    ]}
+                    onPress={() => handleLanguageChange(language.code)}
+                  >
+                    <Text style={styles.languageOptionFlag}>{language.flag}</Text>
+                    <Text
+                      style={[
+                        styles.languageOptionName,
+                        currentLanguage === language.code && styles.languageOptionNameSelected,
+                      ]}
+                    >
+                      {language.name}
+                    </Text>
+                    {currentLanguage === language.code && (
+                      <Icon name="checkmark-circle" size={24} color="#16a34a" />
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </View>
+        </Modal>
+
       {/* Header */}
       <View style={styles.headerSection}>
         <Text style={styles.headerEmoji}>⋯</Text>
@@ -88,7 +174,6 @@ const MoreScreen: React.FC = () => {
       </View>
 
       {/* Menu Items */}
-      <View style={styles.menuSection}>
         {menuItems
           .filter((item) => item.title !== "Rate Us")
           .map((item, idx) => (
@@ -536,6 +621,100 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   menuSection: { paddingHorizontal: 16, paddingVertical: 16 },
+  section: { marginBottom: 24 },
+  languageButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#f0fdf4',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#16a34a',
+  },
+  languageButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  languageIcon: {
+    fontSize: 24,
+    marginRight: 12,
+  },
+  languageInfo: {
+    flex: 1,
+  },
+  languageLabel: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+  },
+  languageCurrent: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1B5E20',
+    marginTop: 2,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 16,
+    paddingBottom: 40,
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1B5E20',
+  },
+  languageList: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  languageOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+    marginBottom: 8,
+    backgroundColor: '#f9fafb',
+    borderRadius: 8,
+  },
+  languageOptionSelected: {
+    backgroundColor: '#e8f5e9',
+    borderLeftWidth: 4,
+    borderLeftColor: '#16a34a',
+  },
+  languageOptionFlag: {
+    fontSize: 24,
+    marginRight: 12,
+  },
+  languageOptionName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+    flex: 1,
+  },
+  languageOptionNameSelected: {
+    color: '#16a34a',
+    fontWeight: '600',
+  },
   menuItem: {
     flexDirection: "row",
     alignItems: "center",

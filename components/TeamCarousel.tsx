@@ -10,7 +10,9 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+
 import { TeamMember, teamMembers } from '../data/teamData';
+const placeholderUrl = 'https://res.cloudinary.com/dqgqdszk2/image/upload/v1762096294/WhatsApp_Image_2025-11-02_at_20.40.43_ddd4c1c5_bzssdi.jpg';
 
 const { width, height } = Dimensions.get('window');
 
@@ -87,9 +89,9 @@ export default function TeamCarousel({ onMemberPress }: TeamCarouselProps) {
           {/* Inner rotated image */}
           <View style={styles.imageWrapper}>
             <Image
-              source={member.image}
+              source={{ uri: member.image || placeholderUrl }}
               style={styles.memberImage}
-              defaultSource={require('../assets/placeholder.jpg')}
+              defaultSource={{ uri: placeholderUrl }}
             />
           </View>
         </View>

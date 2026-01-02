@@ -161,7 +161,9 @@ const DashboardScreen: React.FC = () => {
                 </View>
               </View>
             )}
-            ListEmptyComponent={<Text style={styles.emptyMessage}>No donations yet. Start planting today! 🌱</Text>}
+            ListEmptyComponent={() => (
+              <Text style={styles.emptyMessage}>No donations yet. Start planting today! 🌱</Text>
+            )}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#2E7D32" />}
             scrollEnabled={false}
           />
